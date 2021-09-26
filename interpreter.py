@@ -1,5 +1,6 @@
 #---DEPENDENCIES--------------------------------------------------------------+
 import numpy as np
+from keyboard import is_pressed
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
@@ -19,18 +20,18 @@ _s = [1,0,0,0,0,0,0,0]
 
 #---LANGUAGES-----------------------------------------------------------------+
 language={
-    'c1':[7,6,_s],
-    'c2':[7,g2,_s],
-    'c3':[7,g3,_s],
-    'c4':[7,g4,_s],
-    'c5':[7,g5,_s],
-    'c6':[7,g6,_s],
-    'c7':[7,6,g2,_s],
-    'c8':[7,g2,g3,_s],
-    'c9':[7,g3,g4,_s],
-    'c10':[7,g4,g5,_s],
-    'c11':[7,g5,g6,_s],
-    'c12':[7,g6,6,_s],
+    'c1':[7,6,0],
+    'c2':[7,5,0],
+    'c3':[7,4,0],
+    'c4':[7,3,0],
+    'c5':[7,2,0],
+    'c6':[7,1,0],
+    'c7':[7,6,5,0],
+    'c8':[7,5,4,0],
+    'c9':[7,4,3,0],
+    'c10':[7,3,2,0],
+    'c11':[7,2,1,0],
+    'c12':[7,1,6,0]
 
 }
 
@@ -55,6 +56,7 @@ def collect_gesture():
     snap = 60      # shutter waiting time
     wait = 0       # count
     seq=[]
+    print('press q to quit:')
     while True:
         
         if wait == snap: # captures image only when wait = snap
@@ -67,18 +69,19 @@ def collect_gesture():
                 arr = np.array(frame)
                 arr = arr.reshape((1,64,64,1))
                 pred = GCF.predict(arr)
-                pred=list(pred)
+                print(pred)
+                pred=list(pred[0])
 
                 if pred==s_:
-                  seq.append(s_)
+                  seq.append(7)
                 
                 if len(seq):
-                  if pred==seq[-1]:
+                  if pred.index(1)==seq[-1]:
                     continue
                   elif pred!=_s:
-                    seq.append(pred)
+                    seq.append(pred.index(1))
                   else:
-                    seq.append(pred)
+                    seq.append(0)
                     decide_task(language(get_key(seq)))
                     seq=[]
             else:
@@ -86,10 +89,10 @@ def collect_gesture():
             wait = 0
         else:
             wait += 1
-            
-        #Break if 'q' is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+        if is_pressed('q'):
+          break
 
     cam.release()
     cv2.destroyAllWindows()
