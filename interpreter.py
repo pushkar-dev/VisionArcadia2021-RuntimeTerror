@@ -3,17 +3,25 @@ import numpy as np
 from keyboard import is_pressed
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-import tensorflow as tf
 from tensorflow import keras
 import cv2,time
 from sysControls import decide_task
 
 #---GESTURES------------------------------------------------------------------+
-s_ = [0,0,0,0,0,0,0,0,1]
-_s = [1,0,0,0,0,0,0,0,0]
+# >>> indices
+# s_ = 8
+# g1 = 1
+# g2 = 2
+# g3 = 3
+# g4 = 4
+# g5 = 5
+# g6 = 6
+# na = 7
+# _s = 0
+# <<<
 
 #---LANGUAGES-----------------------------------------------------------------+
-language={
+language = {
     'c1':[8,6,0],
     'c2':[8,5,0],
     'c3':[8,4,0],
@@ -25,12 +33,10 @@ language={
     'c9':[8,4,3,0],
     'c10':[8,3,2,0],
     'c11':[8,2,1,0],
-    'c12':[8,1,6,0]
-
-}
+    'c12':[8,1,6,0]}
 
 def cnvt_gesture(gest):
-  return gest.index(max(gest))
+    return gest.index(max(gest))
 
 def get_key(val):
     for key, value in language.items():
@@ -40,7 +46,9 @@ def get_key(val):
 
 #---MODEL---------------------------------------------------------------------+
 model = 'M1.h5'
-GCF = keras.models.load_model(f'{model}')   # CNN used for GCF
+GCF = keras.models.load_model(f'models/{model}')   # CNN used for GCF
+
+img_size = GCF.input_shape[1:3]
 
 #---PARSER--------------------------------------------------------------------+
 def collect_gesture():
@@ -51,6 +59,7 @@ def collect_gesture():
     snap = 60      # shutter waiting time
     wait = 0       # count
     seq=[]
+    
     print('press q to quit:')
     while True:
         
@@ -58,30 +67,34 @@ def collect_gesture():
             
             ret, frame = cam.read()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            frame = cv2.resize(frame, (64,64), interpolation = cv2.INTER_AREA)
+            frame = cv2.resize(frame,img_size,interpolation = cv2.INTER_AREA)
             
             if ret:
                 arr = np.array(frame)
-                arr = arr.reshape((1,64,64,1))
-                pred = GCF.predict(arr)
-                pred=list(int(i) for i in pred[0])
-                print(pred)
-
-                if pred==s_:
-                  seq.append(8)
+                arr = arr.reshape((1,img_size[0],img_size[1],1))
+                arr = arr / 20
+                p = GCF.predict(arr)
+                p = p.reshape((p.shape[1],))
                 
-                if len(seq):
-                  if pred.index(1)==seq[-1]:
-                    continue
-                  elif pred!=_s:
-                    temp=pred.index(1)
-                    if temp!=None:
-                      seq.append(temp)
-                    else: continue
-                  elif pred==_s:
-                    seq.append(0)
-                    decide_task(language(get_key(seq)))
-                    seq=[]
+                if max(p) < 0.5:
+                    pred = 7
+                else:
+                    pred = np.argmax(p)
+                    
+                print(f'current gesture: {pred} ; seq: {seq}')
+
+                if pred == 8 and len(seq) == 0:
+                    seq.append(pred)
+                
+                if len(seq) > 0:
+                    if pred == seq[-1]:
+                        continue
+                    elif pred != 0 and pred != 7:
+                        seq.append(pred)
+                    elif pred == 0:
+                        seq.append(pred)
+                        decide_task(get_key(seq))
+                        seq=[]
             else:
                 break
             wait = 0
