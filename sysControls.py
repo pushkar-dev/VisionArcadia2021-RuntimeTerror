@@ -56,3 +56,5 @@ def decide_task(arg:str):
       zoomout()
     elif arg=='c12':
       calendar()
+    else:
+      print('No matching commands found!')

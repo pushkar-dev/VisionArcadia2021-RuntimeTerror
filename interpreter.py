@@ -9,29 +9,23 @@ import cv2,time
 from sysControls import decide_task
 
 #---GESTURES------------------------------------------------------------------+
-s_ = [0,0,0,0,0,0,0,1]
-g1 = [0,0,0,0,0,0,1,0]
-g2 = [0,0,0,0,0,1,0,0]
-g3 = [0,0,0,0,1,0,0,0]
-g4 = [0,0,0,1,0,0,0,0]
-g5 = [0,0,1,0,0,0,0,0]
-g6 = [0,1,0,0,0,0,0,0]
-_s = [1,0,0,0,0,0,0,0]
+s_ = [0,0,0,0,0,0,0,0,1]
+_s = [1,0,0,0,0,0,0,0,0]
 
 #---LANGUAGES-----------------------------------------------------------------+
 language={
-    'c1':[7,6,0],
-    'c2':[7,5,0],
-    'c3':[7,4,0],
-    'c4':[7,3,0],
-    'c5':[7,2,0],
-    'c6':[7,1,0],
-    'c7':[7,6,5,0],
-    'c8':[7,5,4,0],
-    'c9':[7,4,3,0],
-    'c10':[7,3,2,0],
-    'c11':[7,2,1,0],
-    'c12':[7,1,6,0]
+    'c1':[8,6,0],
+    'c2':[8,5,0],
+    'c3':[8,4,0],
+    'c4':[8,3,0],
+    'c5':[8,2,0],
+    'c6':[8,1,0],
+    'c7':[8,6,5,0],
+    'c8':[8,5,4,0],
+    'c9':[8,4,3,0],
+    'c10':[8,3,2,0],
+    'c11':[8,2,1,0],
+    'c12':[8,1,6,0]
 
 }
 
@@ -42,6 +36,7 @@ def get_key(val):
     for key, value in language.items():
          if val == value:
              return key
+    else: return None
 
 #---MODEL---------------------------------------------------------------------+
 model = 'M1.h5'
@@ -69,18 +64,21 @@ def collect_gesture():
                 arr = np.array(frame)
                 arr = arr.reshape((1,64,64,1))
                 pred = GCF.predict(arr)
+                pred=list(int(i) for i in pred[0])
                 print(pred)
-                pred=list(pred[0])
 
                 if pred==s_:
-                  seq.append(7)
+                  seq.append(8)
                 
                 if len(seq):
                   if pred.index(1)==seq[-1]:
                     continue
                   elif pred!=_s:
-                    seq.append(pred.index(1))
-                  else:
+                    temp=pred.index(1)
+                    if temp!=None:
+                      seq.append(temp)
+                    else: continue
+                  elif pred==_s:
                     seq.append(0)
                     decide_task(language(get_key(seq)))
                     seq=[]
