@@ -9,31 +9,28 @@ from sysControls import decide_task
 
 #---GESTURES------------------------------------------------------------------+
 # >>> indices
-# s_ = 8
+# s_ = 5
 # g1 = 1
 # g2 = 2
 # g3 = 3
-# g4 = 4
-# g5 = 5
-# g6 = 6
-# na = 7
 # _s = 0
+# na = 4
 # <<<
 
 #---LANGUAGES-----------------------------------------------------------------+
 language = {
-    'c1':[8,6,0],
-    'c2':[8,5,0],
-    'c3':[8,4,0],
-    'c4':[8,3,0],
-    'c5':[8,2,0],
-    'c6':[8,1,0],
-    'c7':[8,6,5,0],
-    'c8':[8,5,4,0],
-    'c9':[8,4,3,0],
-    'c10':[8,3,2,0],
-    'c11':[8,2,1,0],
-    'c12':[8,1,6,0]}
+    'c1':[5,1,0],
+    'c2':[5,2,0],
+    'c3':[5,3,0],
+    'c4':[5,1,2,0],
+    'c5':[5,1,3,0],
+    'c6':[5,2,1,0],
+    'c7':[5,2,3,0],
+    'c8':[5,3,1,0],
+    'c9':[5,3,2,0],
+    'c10':[5,1,2,3,0],
+    'c11':[5,2,3,1,0],
+    'c12':[5,3,1,2,0]}
 
 def cnvt_gesture(gest):
     return gest.index(max(gest))
@@ -66,30 +63,27 @@ def collect_gesture():
         if wait == snap: # captures image only when wait = snap
             
             ret, frame = cam.read()
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             frame = cv2.resize(frame,img_size,interpolation = cv2.INTER_AREA)
             
             if ret:
                 arr = np.array(frame)
-                arr = arr.reshape((1,img_size[0],img_size[1],1))
-                arr = arr / 20
+                arr = arr / 255
+                arr = arr.reshape(1,img_size[0],img_size[1],3)
                 p = GCF.predict(arr)
                 p = p.reshape((p.shape[1],))
                 
-                if max(p) < 0.5:
-                    pred = 7
-                else:
-                    pred = np.argmax(p)
+                pred = np.argmax(p)
                     
                 print(f'current gesture: {pred} ; seq: {seq}')
 
-                if pred == 8 and len(seq) == 0:
+                if pred == 5 and len(seq) == 0:
                     seq.append(pred)
                 
                 if len(seq) > 0:
                     if pred == seq[-1]:
                         continue
-                    elif pred != 0 and pred != 7:
+                    elif pred != 0 and pred != 4 and pred != 5:
                         seq.append(pred)
                     elif pred == 0:
                         seq.append(pred)
