@@ -69,4 +69,4 @@ g5![WhatsApp Image 2021-09-30 at 10 25 05 AM](https://user-images.githubusercont
 11. c11 8,2,1,0 zoomout
 12. c12 8,1,6,0 open / close calender
 
-All codes used in training models and making training dataset re present in model_train diresctory.
+All codes used in training models and making training dataset re present in model_train directory.
