@@ -47,26 +47,26 @@
 2. Gesture list and gesture language are shown below.
 
 # Gestures
-There are 8 gestures<br>
-g1![image](https://user-images.githubusercontent.com/79650452/135390350-7da512c9-4529-4820-8f7a-d6e3af0de9d1.png)<br>
-g2![WhatsApp Image 2021-09-30 at 10 21 38 AM](https://user-images.githubusercontent.com/79650452/135390383-43e6b2ae-a09a-4768-847c-9cdf769f5efc.jpeg)<br>
-g3![WhatsApp Image 2021-09-30 at 10 22 04 AM](https://user-images.githubusercontent.com/79650452/135390398-9dc742e3-e280-4e8d-b1e0-2e7434a390b0.jpeg)<br>
-g4![WhatsApp Image 2021-09-30 at 10 22 56 AM](https://user-images.githubusercontent.com/79650452/135390418-cd667beb-eec2-448b-9a26-c8d6853b8f56.jpeg)<br>
-g5![WhatsApp Image 2021-09-30 at 10 25 05 AM](https://user-images.githubusercontent.com/79650452/135390435-988ddeb0-a387-403c-b1f5-bbd7ac56b33e.jpeg)<br>
-
+There are 5 gestures<br>
+5![image](https://user-images.githubusercontent.com/79650452/135390350-7da512c9-4529-4820-8f7a-d6e3af0de9d1.png)<br>
+3![WhatsApp Image 2021-09-30 at 10 21 38 AM](https://user-images.githubusercontent.com/79650452/135390383-43e6b2ae-a09a-4768-847c-9cdf769f5efc.jpeg)<br>
+2![WhatsApp Image 2021-09-30 at 10 22 04 AM](https://user-images.githubusercontent.com/79650452/135390398-9dc742e3-e280-4e8d-b1e0-2e7434a390b0.jpeg)<br>
+1![WhatsApp Image 2021-09-30 at 10 22 56 AM](https://user-images.githubusercontent.com/79650452/135390418-cd667beb-eec2-448b-9a26-c8d6853b8f56.jpeg)<br>
+0![WhatsApp Image 2021-09-30 at 10 25 05 AM](https://user-images.githubusercontent.com/79650452/135390435-988ddeb0-a387-403c-b1f5-bbd7ac56b33e.jpeg)<br>
+One auxilary gesture reserved for only noise
 
 # Gesture Language
-1. c1 8,6,0 volume up
-2. c2 8,5,0 volume down
-3. c3 8,4,0 brightness up
-4. c4 8,3,0 brightness down
-5. c5 8,2,0 screenshot
-6. c6 8,1,0 scroll up
-7. c7 8,6,5,0 scroll down
-8. c8 8,5,4,0 press enter
-9. c9 8,4,3,0 press space
-10. c10 8,3,2,0 zoomin
-11. c11 8,2,1,0 zoomout
-12. c12 8,1,6,0 open / close calender
+1. c1 5,1,0 volume up
+2. c2 5,2,0 volume down
+3. c3 5,3,0 brightness up
+4. c4 5,1,2,0 brightness down
+5. c5 5,1,3,0 screenshot
+6. c6 5,2,1,0 scroll up
+7. c7 5,2,3,0 scroll down
+8. c8 5,3,1,0 press enter
+9. c9 5,3,2,0 press space
+10. c10 5,1,2,3,0 zoomin
+11. c11 5,2,3,1,0 zoomout
+12. c12 5,3,1,2,0 open / close calender
 
 All codes used in training models and making training dataset re present in model_train directory.
